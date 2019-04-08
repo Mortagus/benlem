@@ -1,0 +1,31 @@
+MON SITE WEB
+============
+
+contiendra une multitude de choses:
+- un blog
+	- front (publique)
+		- idée de cétagories (séries ?) de postes: 
+			- les clés du succès
+			- les jars
+			- développement personnel
+			- mes lectures
+			    - IT
+			    - SF
+			    - Autre
+			- mes découvertes musicales
+			- mes redécouvertes "scolaires"
+	- admin (privé)
+		- gérer les posts (CRUD)
+		- gérer les commentaires (modération)
+		- gérer les statistiques (monitoring)
+- un calendrier (privé)
+- une todo list "quotidienne" (privé)
+- une Bucket List (privé)
+- une gestion des jars (privé)
+- une gestion de mes abonnements YT
+- une liste de jeux fait maison (publique)
+	- tetris
+	- mastermind
+	- asteroids
+- une liste d'expérimentation (publique)
+	- The coding train ^^
