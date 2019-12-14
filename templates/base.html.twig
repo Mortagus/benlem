@@ -10,10 +10,14 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
-    <body class="container-fluid{% if page_identifier is defined %} {{ page_identifier }}{% endif %}">
+    <body class="container-fluid{% if page_identifier is defined %} {{ page_identifier | lower }}{% endif %}">
+        {% include 'snippets/header.html.twig' %}
         <div class="wrapper">
-            {% include 'snippets/header.html.twig' %}
-            {% block body %}{% endblock %}
+            <div class="row">
+                <div class="col">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
         </div>
 
         {% block javascripts %}

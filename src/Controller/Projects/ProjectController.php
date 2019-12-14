@@ -20,6 +20,7 @@ class ProjectController extends AbstractController
     {
         return $this->render('Projects/dashboard.html.twig', [
             'controller_name' => 'ProjectController',
+            'page_identifier' => 'projetcs',
         ]);
     }
 }

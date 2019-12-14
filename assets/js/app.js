@@ -6,9 +6,12 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-require('../css/app.css');
-require('../css/global.scss');
-require('../css/header.scss');
-
 const $ = require('jquery');
 require('bootstrap');
+
+// require('../css/app.css');
+require('../css/global.scss');
+require('../css/games.scss');
+// require('../css/header.scss');
+
+require('./games/tetris/tetris.js');
