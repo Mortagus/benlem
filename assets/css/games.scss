@@ -1,0 +1,17 @@
+.games {
+
+  .list-group {
+    width: 30%;
+  }
+
+  #tetris_modal {
+    .modal-dialog {
+      height: 100%;
+      max-width: 700px;
+      .modal-content {
+        height: 90%;
+      }
+    }
+  }
+
+}

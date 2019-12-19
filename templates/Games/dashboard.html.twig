@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+    <h1>My JavaScript Games</h1>
+    <p>Vous avez ici la liste des jeux que j'ai codé soit de moi-même soit en partant d'un contenu retrouvé sur le net.</p>
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action disabled">
+            Asteroid
+        </a>
+        <a href="#" class="list-group-item list-group-item-action disabled">
+            Mastermind
+        </a>
+        <a href="#" class="list-group-item list-group-item-action disabled">
+            Morpion / Tic Tac Toe
+        </a>
+        <a href="#" class="list-group-item list-group-item-action disabled">
+            Snake
+        </a>
+        <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#tetris_modal">
+            Tetris
+        </a>
+    </div>
+
+    {% include 'Games/tetris/game_board.modal.html.twig' %}
+{% endblock %}
