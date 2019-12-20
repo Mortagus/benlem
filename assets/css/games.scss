@@ -5,11 +5,17 @@
   }
 
   #tetris_modal {
+
+    #tetris_canvas,
+    #next_tetroid_canvas {
+      border: 1px solid black;
+    }
+
     .modal-dialog {
-      height: 100%;
-      max-width: 700px;
+      height: 90%;
+      max-width: 530px;
       .modal-content {
-        height: 90%;
+        height: 100%;
       }
     }
   }

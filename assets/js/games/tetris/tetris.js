@@ -1,3 +1,5 @@
+import Tetroid from './tetroids';
+
 class Tetris {
 
     constructor(elementId) {
@@ -13,6 +15,7 @@ class Tetris {
         this.tetroidBank = this.initTetroidBank();
         this.colorBank = this.initColorBank();
         this.currentPiece = null;
+        this.initKeyboardControl();
     }
 
     initColorBank() {
@@ -42,7 +45,6 @@ class Tetris {
 
     start() {
         this.initContext();
-        this.initKeyboardControl();
         this.initArena(12, 20);
         this.resetCurrentPiece();
         this.update();
@@ -53,7 +55,8 @@ class Tetris {
     }
 
     initKeyboardControl() {
-        document.addEventListener('keydown', event => {
+        this.canvas.addEventListener('keydown', event => {
+            console.log('hello !');
             let code = 0;
 
             if (event.key !== undefined) {
@@ -63,14 +66,15 @@ class Tetris {
             } else if (event.keyCode !== undefined) {
                 code = event.keyCode;
             }
+            console.log('keyboard touch detected! here is the key code: '+code);
 
-            switch (code) {
-                case 37: this.moveTetroid(-1); break;
-                case 39: this.moveTetroid(1); break;
-                case 40: this.dropTetroid(); break;
-                case 17: this.rotateTetroid(1); break;
-                case 16: this.rotateTetroid(-1); break;
-            }
+            // switch (code) {
+            //     case 37: this.moveTetroid(-1); break;
+            //     case 39: this.moveTetroid(1); break;
+            //     case 40: this.dropTetroid(); break;
+            //     case 17: this.rotateTetroid(1); break;
+            //     case 16: this.rotateTetroid(-1); break;
+            // }
         });
     }
 
@@ -234,4 +238,4 @@ class Tetris {
     }
 }
 
-module.exports = Tetris;
+export default Tetris;

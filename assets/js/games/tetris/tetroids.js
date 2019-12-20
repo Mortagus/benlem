@@ -12,4 +12,4 @@ class Tetroid {
     }
 }
 
-module.exports = Tetroid;
+export default Tetroid;
