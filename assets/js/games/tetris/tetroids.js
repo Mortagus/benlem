@@ -1,14 +1,24 @@
 class Tetroid {
 
-    constructor() {
+    constructor(matrix, position) {
+        this._matrix = matrix;
+        this._position = position;
     }
 
-    setMatrix(matrix) {
-        this.matrix = matrix;
+    set matrix(matrix) {
+        this._matrix = matrix;
     }
 
-    setPosition(position) {
-        this.position = position;
+    set position(position) {
+        this._position = position;
+    }
+
+    get matrix() {
+        return this._matrix;
+    }
+
+    get position() {
+        return this._position;
     }
 }
 

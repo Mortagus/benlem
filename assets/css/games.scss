@@ -11,6 +11,11 @@
       border: 1px solid black;
     }
 
+    #tetris_canvas:focus,
+    #next_tetroid_canvas:focus {
+      border: 2px solid #414141;
+    }
+
     .modal-dialog {
       height: 90%;
       max-width: 530px;
