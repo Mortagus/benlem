@@ -145,6 +145,8 @@ class GameMaster {
   }
 }
 
-if (document.getElementById('tetris_canvas') !== null) {
-  new GameMaster();
-}
+$(document).ready(function () {
+  $(document).on('shown.bs.modal', '#tetris_modal', {gameMaster: this}, function (event) {
+    console.log('modal fully shown');
+  });
+});

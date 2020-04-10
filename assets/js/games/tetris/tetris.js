@@ -17,8 +17,6 @@ class Tetris {
     this.animationId = null;
 
     this.arena = [];
-    this.tetroidBank = this.initTetroidBank();
-    this.colorBank = this.initColorBank();
     this.currentPiece = null;
     this.nextPiece = null;
 
@@ -30,31 +28,6 @@ class Tetris {
     this.drawMainBoard();
     this.nextPiece = this.createNewTetroid();
     this.drawSecondaryBoard();
-  }
-
-  initColorBank() {
-    return [
-      null,
-      '#5cad2c',
-      '#2cb099',
-      '#ef7e18',
-      '#274696',
-      '#df2384',
-      '#f8d517',
-      '#e5282e',
-    ];
-  }
-
-  initTetroidBank() {
-    return [
-      new Tetroid([[0, 1, 0], [1, 1, 1]], {x: 6, y: 0}),
-      new Tetroid([[2, 2, 0], [0, 2, 2]], {x: 6, y: 0}),
-      new Tetroid([[0, 3, 3], [3, 3, 0]], {x: 6, y: 0}),
-      new Tetroid([[4, 4], [4, 4]], {x: 6, y: 0}),
-      new Tetroid([[0, 0, 5], [5, 5, 5]], {x: 6, y: 0}),
-      new Tetroid([[6, 0, 0], [6, 6, 6]], {x: 6, y: 0}),
-      new Tetroid([[7, 7, 7, 7]], {x: 6, y: 0})
-    ];
   }
 
   start() {
@@ -132,74 +105,6 @@ class Tetris {
     });
   }
 
-  collide() {
-    const m = this.currentPiece.matrix;
-    const o = this.currentPiece.position;
-    for (let y = 0; y < m.length; ++y) {
-      for (let x = 0; x < m[y].length; ++x) {
-        if (m[y][x] !== 0 &&
-          (this.arena[y + o.y] &&
-            this.arena[y + o.y][x + o.x]) !== 0) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  moveTetroid(offset) {
-    this.currentPiece.position.x += offset;
-    if (this.collide()) {
-      this.currentPiece.position.x -= offset;
-    }
-  }
-
-  rotateTetroid(dir) {
-    const pos = this.currentPiece.position.x;
-    let offset = 1;
-    this.rotate(dir);
-    while (this.collide()) {
-      this.currentPiece.position.x += offset;
-      offset = -(offset + (offset > 0 ? 1 : -1));
-      if (offset > this.currentPiece.matrix[0].length) {
-        this.rotate(-dir);
-        this.currentPiece.position.x = pos;
-        return;
-      }
-    }
-  }
-
-  dropTetroid() {
-    this.currentPiece.position.y++;
-    if (this.collide()) {
-      this.currentPiece.position.y--;
-      this.saveCurrentPieceIntoArena();
-      this.resetCurrentPiece();
-      this.cleanArena();
-    }
-    this.dropCounter = 0;
-  }
-
-  rotate(dir) {
-    for (let y = 0; y < this.currentPiece.matrix.length; ++y) {
-      for (let x = 0; x < y; ++x) {
-        [
-          this.currentPiece.matrix[x][y],
-          this.currentPiece.matrix[y][x],
-        ] = [
-          this.currentPiece.matrix[y][x],
-          this.currentPiece.matrix[x][y],
-        ];
-      }
-    }
-
-    if (dir > 0) {
-      this.currentPiece.matrix.forEach(row => row.reverse());
-    } else {
-      this.currentPiece.matrix.reverse();
-    }
-  }
-
   update(time = 0) {
     const deltaTime = time - this.lastTime;
     this.lastTime = time;
@@ -235,28 +140,6 @@ class Tetris {
 
   drawArena() {
     this.drawMatrix(this.mainCanvasContext, this.arena, {x: 0, y: 0});
-  }
-
-  drawMatrix(context, matrix, offset) {
-    matrix.forEach((row, y) => {
-      row.forEach((value, x) => {
-        if (value !== 0) {
-          context.beginPath();
-          context.lineWidth = "2";
-          context.strokeStyle = "black";
-          context.rect(
-            x + offset.x,
-            y + offset.y,
-            1, 1);
-          context.stroke();
-          context.fillStyle = this.colorBank[value];
-          context.fillRect(
-            x + offset.x,
-            y + offset.y,
-            20, 20);
-        }
-      });
-    });
   }
 }
 
