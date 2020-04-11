@@ -14,4 +14,5 @@ require('../css/global.scss');
 require('../css/games.scss');
 // require('../css/header.scss');
 
-require('./games/tetris/game_master.js');
+// require('./games/tetris/game_master.js');
+require('./games/tetris/tetris_master.js');

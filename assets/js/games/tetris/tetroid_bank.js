@@ -11,8 +11,8 @@ import {
 
 class TetroidBank {
   constructor(initialPosition) {
-    this.tetroidBank = this.initTetroidBank();
     this.colorBank = this.initColorBank();
+    this.tetroidBank = this.initTetroidBank();
     this.initialPosition = {x: initialPosition, y: 0};
   }
 
@@ -48,3 +48,5 @@ class TetroidBank {
     return new Tetroid(tetroidFromBank.matrix, tetroidFromBank.position, tetroidFromBank.color);
   }
 }
+
+export default TetroidBank;
