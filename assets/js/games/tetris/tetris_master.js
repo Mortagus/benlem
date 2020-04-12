@@ -16,6 +16,12 @@ class Tetris {
     this.scoreKeeper = new ScoreKeeper('#score', '#line');
     this.tetroidBank = new TetroidBank(6);
     this.gameStatus = new GameStatus('#game_button', '#game_message');
+    this.currentTetroid = null;
+    this.nextTetroid = null;
+    this.lastTime = 0;
+    this.dropCounter = 0;
+    this.dropInterval = 1000;
+    this.animationId = null;
   }
 
   initControls() {
@@ -61,6 +67,55 @@ class Tetris {
   initGame() {
     this.mainBoard.init();
     this.secondaryBoard.init();
+    this.initButtonEventListener();
+    this.currentTetroid = this.tetroidBank.selectRandomTetroid();
+    this.nextTetroid = this.tetroidBank.selectRandomTetroid();
+    this.gameStatus.loadGame();
+  }
+
+  initButtonEventListener() {
+    this.gameStatus.button.on('click', {tetris : this}, function (event) {
+      event.data.tetris.clickEventHandler();
+    });
+  }
+
+  clickEventHandler() {
+    switch (true) {
+      case this.gameStatus.isGameLoaded():
+        this.startGame();
+        break;
+      case this.gameStatus.isGameRunning():
+        this.pauseGame();
+        break;
+      case this.gameStatus.isGamePaused():
+        this.resumeGame();
+        break;
+    }
+  }
+
+  startGame() {
+    this.gameStatus.startGame();
+    this.update();
+  }
+
+  pauseGame() {
+    this.gameStatus.pauseGame();
+    cancelAnimationFrame(this.animationId);
+  }
+
+  resumeGame() {
+    this.gameStatus.resumeGame();
+    this.animationId = requestAnimationFrame(this.update.bind(this));
+  }
+
+  endGame() {
+    this.gameStatus.stopGame();
+    cancelAnimationFrame(this.animationId);
+  }
+
+  update(time = 0) {
+    console.log(time);
+    this.animationId = requestAnimationFrame(this.update.bind(this));
   }
 }
 

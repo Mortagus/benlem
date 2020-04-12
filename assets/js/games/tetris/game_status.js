@@ -1,21 +1,19 @@
 import $ from 'jquery';
 
+
+/**
+ * Games States :
+ *  GAME_INSTANCIATED
+ *  GAME_LOADED
+ *  GAME_RUNNING
+ *  GAME_PAUSED
+ *  GAME_STOPPED
+ */
 class GameStatus {
   constructor(gameButtonId, messageId) {
-    this.status = 0;
+    this.status = 'instanciated';
     this.button = $(gameButtonId);
     this.message = $(messageId);
-    this.initButtonEventListener();
-  }
-
-  initButtonEventListener() {
-    this.button.on('click', {gameStatus : this}, function (event) {
-      event.data.gameStatus.clickEventHandler();
-    });
-  }
-
-  clickEventHandler() {
-    console.log('click !');
   }
 
   setGameMessage(message) {
@@ -26,59 +24,54 @@ class GameStatus {
     this.button.text(message);
   }
 
-  startGameEventHandler() {
-    this.startGame();
-    this.setGameMessage('The game just started !');
-    this.setGameButtonText('Pause');
+  isGameInstanciated() {
+    return this.status === 'instanciated';
   }
 
-  pauseGameEventHandler() {
-    this.pauseGame();
-    this.setGameMessage('PAUSE');
-    this.setGameButtonText('Resume');
+  isGameLoaded() {
+    return this.status === 'loaded';
   }
 
-  resumeGameEventHandler() {
-    this.startGame();
-    this.setGameMessage('We are back again!');
-    this.setGameButtonText('Pause');
-  }
-
-  stopGameEventHandler() {
-    this.stopGame();
-    this.setGameMessage('Game OVER !!!!!');
-    this.setGameButtonText('Start a New Game');
-  }
-
-  /**
-   * Games States :
-   *  GAME_STOPPED = -1
-   *  GAME_PAUSED = 0
-   *  GAME_RUNNING = 1
-   */
-  // Game State Management
   isGameRunning() {
-    return this.gameState === 1;
-  }
-
-  isGameStopped() {
-    return this.gameState === -1;
+    return this.status === 'running';
   }
 
   isGamePaused() {
-    return this.gameState === 0;
+    return this.status === 'paused';
   }
 
-  pauseGame() {
-    this.gameState = 0;
+  isGameStopped() {
+    return this.status === 'stopped';
+  }
+
+  loadGame() {
+    this.status = 'loaded';
+    this.setGameButtonText('Start');
+    this.setGameMessage('The game is ready to go.');
   }
 
   startGame() {
-    this.gameState = 1;
+    this.status = 'running';
+    this.setGameButtonText('Pause');
+    this.setGameMessage('The game has started.');
+  }
+
+  pauseGame() {
+    this.status = 'paused';
+    this.setGameButtonText('Resume');
+    this.setGameMessage('The game is paused.');
+  }
+
+  resumeGame() {
+    this.status = 'running';
+    this.setGameButtonText('Pause');
+    this.setGameMessage('The game is resumed.');
   }
 
   stopGame() {
-    this.gameState = -1;
+    this.status = 'stopped';
+    this.setGameButtonText('STOP');
+    this.setGameMessage('The game is OVER.');
   }
 }
 
