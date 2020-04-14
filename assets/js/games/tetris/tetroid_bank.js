@@ -10,12 +10,14 @@ import {
 } from './tetroids';
 
 class TetroidBank {
-  constructor(initialPosition) {
+  constructor() {
     this.colorBank = this.initColorBank();
     this.tetroidBank = this.initTetroidBank();
-    this.initialPosition = {x: initialPosition, y: 0};
   }
 
+  /**
+   * @returns {string[]}
+   */
   initColorBank() {
     return [
       null,
@@ -29,21 +31,27 @@ class TetroidBank {
     ];
   }
 
+  /**
+   * @returns {(HorizontalBar|RightL|LeftL|Square|LeftSquiggle)[]}
+   */
   initTetroidBank() {
     return [
-      new HorizontalBar(this.initialPosition, this.colorBank[7]),
-      new RightL(this.initialPosition, this.colorBank[6]),
-      new LeftL(this.initialPosition, this.colorBank[5]),
-      new Square(this.initialPosition, this.colorBank[4]),
-      new LeftSquiggle(this.initialPosition, this.colorBank[3]),
-      new RightSquiggle(this.initialPosition, this.colorBank[2]),
-      new TBlock(this.initialPosition, this.colorBank[1])
+      new HorizontalBar(this.colorBank[7]),
+      new RightL(this.colorBank[6]),
+      new LeftL(this.colorBank[5]),
+      new Square(this.colorBank[4]),
+      new LeftSquiggle(this.colorBank[3]),
+      new RightSquiggle(this.colorBank[2]),
+      new TBlock(this.colorBank[1])
     ];
   }
 
+  /**
+   * @returns {Tetroid}
+   */
   selectRandomTetroid() {
-    const tetroidCount = this.tetroidBank.length;
-    const randomIndex = Math.floor(Math.random() * tetroidCount);
+    const tetroidCount = this.tetroidBank.length - 1;
+    let randomIndex = Math.floor(Math.random() * tetroidCount);
     const tetroidFromBank = this.tetroidBank[randomIndex];
     return new Tetroid(tetroidFromBank.matrix, tetroidFromBank.position, tetroidFromBank.color);
   }

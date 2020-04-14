@@ -1,52 +1,62 @@
 class Tetroid {
-
   constructor(matrix, position, colorHex) {
     this.matrix = matrix;
     this.position = position;
     this.color = colorHex;
-    this.length = 20;
+    this.width = this.matrix[0].length;
+    this.height = this.matrix.length;
+    this.lineWidth = 2;
   }
 
-  draw(context) {
+  draw(board) {
+    const context = board.context;
+    const length = board.unitLength;
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          context.beginPath();
-          context.lineWidth = "2";
-          context.strokeStyle = "black";
-          context.rect(
-            x + this.position.x,
-            y + this.position.y,
-            this.length, this.length);
-          context.stroke();
+          const rectanglePositionX = (x + this.position.x) * length;
+          const rectanglePositionY = (y + this.position.y) * length;
+          // context.beginPath();
+          // context.lineWidth = this.lineWidth;
+          // context.strokeStyle = "black";
+          // context.rect(
+          //   rectanglePositionX,
+          //   rectanglePositionY,
+          //   length,
+          //   length
+          // );
+          // context.stroke();
+
           context.fillStyle = this.color;
           context.fillRect(
-            x + this.position.x,
-            y + this.position.y,
-            this.length, this.length);
+            rectanglePositionX,
+            rectanglePositionY,
+            length,
+            length
+          );
         }
       });
     });
   }
 
-  update(xOffset, yOffset, rotation) {
-    if (xOffset === -1 || xOffset === 1) {
-      this.moveXOffset(xOffset);
-    }
-    if (yOffset === 1) {
-      this.moveYOffset();
-    }
-    if (rotation === -1 || rotation === 1) {
-      this.rotateTetroid(rotation);
-    }
+  moveLeft() {
+    this.position.x--;
   }
 
-  moveXOffset(offset) {
-    this.position.x += offset;
+  moveRight() {
+    this.position.x++;
   }
 
-  moveYOffset() {
+  drop() {
     this.position.y++;
+  }
+
+  rotateLeft() {
+    this.rotate(1);
+  }
+
+  rotateRight() {
+    this.rotate(-1);
   }
 
   rotateTetroid(dir) {
@@ -56,8 +66,8 @@ class Tetroid {
   }
 
   rotate(dir) {
-    for (let y = 0; y < this.matrix.length; ++y) {
-      for (let x = 0; x < y; ++x) {
+    this.matrix.forEach((row, y) => {
+      row.forEach((value, x) => {
         [
           this.matrix[x][y],
           this.matrix[y][x],
@@ -65,8 +75,8 @@ class Tetroid {
           this.matrix[y][x],
           this.matrix[x][y],
         ];
-      }
-    }
+      });
+    });
 
     if (dir > 0) {
       this.matrix.forEach(row => row.reverse());
@@ -74,47 +84,61 @@ class Tetroid {
       this.matrix.reverse();
     }
   }
+
+  collide(cells) {
+    const pos = this.position;
+    this.matrix.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value !== 0 &&
+          (cells[y + pos.y] &&
+            cells[y + pos.y][x + pos.x]) !== 0) {
+          return true;
+        }
+      });
+    });
+    return false;
+  }
 }
 
 class HorizontalBar extends Tetroid {
-  constructor(initialPosition, color) {
-    super([[1, 1, 1, 1]], initialPosition, color);
+  constructor(color) {
+    super([[1, 1, 1, 1]], {x: 0, y: 0}, color);
   }
 }
 
 class RightL extends Tetroid {
-  constructor(initialPosition, color) {
-    super([[0, 0, 1], [1, 1, 1]], initialPosition, color);
+  constructor(color) {
+    super([[0, 0, 1], [1, 1, 1]], {x: 0, y: 0}, color);
   }
 }
 
 class LeftL extends Tetroid {
-  constructor(initialPosition, color) {
-    super([[1, 0, 0], [1, 1, 1]], initialPosition, color);
+  constructor(color) {
+    super([[1, 0, 0], [1, 1, 1]], {x: 0, y: 0}, color);
   }
 }
 
 class Square extends Tetroid {
-  constructor(initialPosition, color) {
-    super([[1, 1], [1, 1]], initialPosition, color);
+  constructor(color) {
+    super([[1, 1], [1, 1]], {x: 0, y: 0}, color);
   }
 }
 
 class LeftSquiggle extends Tetroid {
-  constructor(initialPosition, color) {
-    super([[1, 1, 0], [0, 1, 1]], initialPosition, color);
+  constructor(color) {
+    super([[1, 1, 0], [0, 1, 1]], {x: 0, y: 0}, color);
   }
 }
 
 class RightSquiggle extends Tetroid {
-  constructor(initialPosition, color) {
-    super([[0, 1, 1], [1, 1, 0]], initialPosition, color);
+  constructor(color) {
+    super([[0, 1, 1], [1, 1, 0]], {x: 0, y: 0}, color);
   }
 }
 
 class TBlock extends Tetroid {
-  constructor(initialPosition, color) {
-    super([[0, 1, 0], [1, 1, 1]], initialPosition, color);
+  constructor(color) {
+    super([[0, 1, 0], [1, 1, 1]], {x: 0, y: 0}, color);
   }
 }
 

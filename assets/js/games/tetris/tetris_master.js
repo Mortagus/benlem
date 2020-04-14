@@ -12,9 +12,9 @@ class Tetris {
   constructor(mainCanvasId, secondaryCanvasId) {
     this.initControls();
     this.mainBoard = new Board(mainCanvasId, 12, 20);
-    this.secondaryBoard = new Board(secondaryCanvasId, 6, 6);
+    this.secondaryBoard = new Board(secondaryCanvasId, 5, 5);
     this.scoreKeeper = new ScoreKeeper('#score', '#line');
-    this.tetroidBank = new TetroidBank(6);
+    this.tetroidBank = new TetroidBank();
     this.gameStatus = new GameStatus('#game_button', '#game_message');
     this.currentTetroid = null;
     this.nextTetroid = null;
@@ -31,35 +31,44 @@ class Tetris {
       switch (code) {
         case 16:
           console.log('ROTATE -1');
+          this.currentTetroid.rotateLeft();
           break;
         case 17:
           console.log('ROTATE 1');
+          this.currentTetroid.rotateRight();
           break;
-        case 33:
-          console.log('LINE COUNTER UP');
-          this.scoreKeeper.incrementLine(1);
-          break;
-        case 34:
-          console.log('LINE COUNTER DOWN');
-          this.scoreKeeper.decrementLine(1);
-          break;
+        // case 33:
+        //   console.log('LINE COUNTER UP');
+        //   this.scoreKeeper.incrementLine(1);
+        //   break;
+        // case 34:
+        //   console.log('LINE COUNTER DOWN');
+        //   this.scoreKeeper.decrementLine(1);
+        //   break;
         case 37:
           console.log('LEFT');
+          this.currentTetroid.moveLeft();
           break;
         case 39:
           console.log('RIGHT');
+          this.currentTetroid.moveRight();
           break;
         case 40:
           console.log('DOWN');
+          this.currentTetroid.drop();
           break;
-        case 107:
-          console.log('SCORE UP');
-          this.scoreKeeper.incrementScore(1);
-          break;
-        case 109:
-          console.log('SCORE DOWN');
-          this.scoreKeeper.decrementScore(1);
-          break;
+        // case 78:
+        //   console.log('N');
+        //   this.initCurrentTetroid();
+        //   break;
+        // case 107:
+        //   console.log('SCORE UP');
+        //   this.scoreKeeper.incrementScore(1);
+        //   break;
+        // case 109:
+        //   console.log('SCORE DOWN');
+        //   this.scoreKeeper.decrementScore(1);
+        //   break;
       }
     });
   }
@@ -68,8 +77,8 @@ class Tetris {
     this.mainBoard.init();
     this.secondaryBoard.init();
     this.initButtonEventListener();
-    this.currentTetroid = this.tetroidBank.selectRandomTetroid();
-    this.nextTetroid = this.tetroidBank.selectRandomTetroid();
+    this.initCurrentTetroid();
+    this.initNextTetroid();
     this.gameStatus.loadGame();
   }
 
@@ -77,6 +86,31 @@ class Tetris {
     this.gameStatus.button.on('click', {tetris : this}, function (event) {
       event.data.tetris.clickEventHandler();
     });
+  }
+
+  initCurrentTetroid() {
+    if (this.nextTetroid) {
+      this.currentTetroid = this.nextTetroid;
+      this.initNextTetroid();
+    } else {
+      this.currentTetroid = this.tetroidBank.selectRandomTetroid();
+    }
+
+    const xPosition = (this.mainBoard.columnMax - this.currentTetroid.width)  / 2;
+    this.currentTetroid.position = {
+      x: xPosition,
+      y: 0
+    };
+  }
+
+  initNextTetroid() {
+    this.nextTetroid = this.tetroidBank.selectRandomTetroid();
+    const xPosition = (this.secondaryBoard.columnMax - this.nextTetroid.width)  / 2;
+    const yPosition = (this.secondaryBoard.rowMax - this.nextTetroid.height) / 2;
+    this.nextTetroid.position = {
+      x: xPosition,
+      y: yPosition
+    };
   }
 
   clickEventHandler() {
@@ -114,8 +148,23 @@ class Tetris {
   }
 
   update(time = 0) {
-    console.log(time);
+    this.mainBoard.draw();
+    this.secondaryBoard.draw();
+    this.tryToDropTetroid(time);
+    this.currentTetroid.draw(this.mainBoard);
+    this.nextTetroid.draw(this.secondaryBoard);
     this.animationId = requestAnimationFrame(this.update.bind(this));
+  }
+
+  tryToDropTetroid(time) {
+    const deltaTime = time - this.lastTime;
+    this.lastTime = time;
+
+    this.dropCounter += deltaTime;
+    if (this.dropCounter > this.dropInterval) {
+      this.currentTetroid.drop();
+      this.dropCounter = 0;
+    }
   }
 }
 

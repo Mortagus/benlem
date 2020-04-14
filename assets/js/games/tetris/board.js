@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import Cell from './cell';
 
 class Board {
   constructor(canvasId, columnMax, rowMax) {
@@ -10,25 +11,31 @@ class Board {
     this.columnMax = columnMax;
     this.rowMax = rowMax;
     this.backgroundColor = '#e1c89f';
+    this.unitLength = Math.floor(this.canvasWidth / this.columnMax);
   }
 
   init() {
     this.cells = this.initCells();
-    this.drawBackground();
   }
 
   initCells() {
     let cells = [];
-    while (this.rowMax--) {
-      cells.push(new Array(this.columnMax).fill(0));
+    for (let rowIndex = this.rowMax; rowIndex > 0; rowIndex--) {
+      cells.push(new Array(this.columnMax).fill(
+        new Cell(0, this.backgroundColor)
+      ));
     }
 
     return cells;
   }
 
-  drawBackground() {
-    this.context.fillStyle = this.backgroundColor;
-    this.context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+  draw() {
+    this.cells.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        this.context.fillStyle = cell.color;
+        this.context.fillRect(x * this.unitLength, y * this.unitLength, this.unitLength, this.unitLength);
+      });
+    });
   }
 }
 
