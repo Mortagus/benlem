@@ -11,7 +11,8 @@ class Board {
     this.columnMax = columnMax;
     this.rowMax = rowMax;
     this.backgroundColor = '#e1c89f';
-    this.unitLength = Math.floor(this.canvasWidth / this.columnMax);
+    this.widthUnit = Math.floor(this.canvasWidth / this.columnMax);
+    this.heightUnit = Math.floor(this.canvasHeight / this.rowMax);
   }
 
   init() {
@@ -33,7 +34,7 @@ class Board {
     this.cells.forEach((row, y) => {
       row.forEach((cell, x) => {
         this.context.fillStyle = cell.color;
-        this.context.fillRect(x * this.unitLength, y * this.unitLength, this.unitLength, this.unitLength);
+        this.context.fillRect(x * this.widthUnit, y * this.heightUnit, this.widthUnit, this.heightUnit);
       });
     });
   }

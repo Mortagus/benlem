@@ -57,10 +57,10 @@ class Tetris {
           console.log('DOWN');
           this.currentTetroid.drop();
           break;
-        // case 78:
-        //   console.log('N');
-        //   this.initCurrentTetroid();
-        //   break;
+        case 78:
+          console.log('N');
+          this.initCurrentTetroid();
+          break;
         // case 107:
         //   console.log('SCORE UP');
         //   this.scoreKeeper.incrementScore(1);
@@ -174,8 +174,12 @@ class Tetris {
  * At the event triggered, the game is loaded
  */
 $(document).ready(function () {
+  let game = null;
   $(document).on('shown.bs.modal', '#tetris_modal', function (event) {
-    const game = new Tetris('#tetris_canvas', '#next_tetroid_canvas');
+    game = new Tetris('#tetris_canvas', '#next_tetroid_canvas');
     game.initGame();
+  });
+  $(document).on('hide.bs.modal', '#tetris_modal', function (event) {
+    game = null;
   });
 });

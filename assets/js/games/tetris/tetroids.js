@@ -10,12 +10,13 @@ class Tetroid {
 
   draw(board) {
     const context = board.context;
-    const length = board.unitLength;
+    const widthlength = board.widthUnit;
+    const heightUnit = board.heightUnit;
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          const rectanglePositionX = (x + this.position.x) * length;
-          const rectanglePositionY = (y + this.position.y) * length;
+          const rectanglePositionX = (x + this.position.x) * widthlength;
+          const rectanglePositionY = (y + this.position.y) * heightUnit;
           // context.beginPath();
           // context.lineWidth = this.lineWidth;
           // context.strokeStyle = "black";
@@ -31,8 +32,8 @@ class Tetroid {
           context.fillRect(
             rectanglePositionX,
             rectanglePositionY,
-            length,
-            length
+            widthlength,
+            heightUnit
           );
         }
       });
@@ -59,30 +60,26 @@ class Tetroid {
     this.rotate(-1);
   }
 
-  rotateTetroid(dir) {
-    const pos = this.position.x;
-    let offset = 1;
-    this.rotate(dir);
-  }
-
   rotate(dir) {
-    this.matrix.forEach((row, y) => {
-      row.forEach((value, x) => {
-        [
-          this.matrix[x][y],
-          this.matrix[y][x],
-        ] = [
-          this.matrix[y][x],
-          this.matrix[x][y],
-        ];
-      });
-    });
-
+    this.transpose();
     if (dir > 0) {
       this.matrix.forEach(row => row.reverse());
     } else {
       this.matrix.reverse();
     }
+  }
+
+  transpose() {
+    this.width = this.matrix[0].length;
+    this.height = this.matrix.length;
+    let transposedMatrix = new Array(this.width);
+    for (let i = 0; i < this.width; ++i) {
+      transposedMatrix[i] = [];
+      for (let j = 0; j < this.height; j++) {
+        transposedMatrix[i][j] = this.matrix[j][i];
+      }
+    }
+    this.matrix = transposedMatrix;
   }
 
   collide(cells) {
