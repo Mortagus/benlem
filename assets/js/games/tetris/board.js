@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Cell from './cell';
+import Cell from './include/cell';
 
 class Board {
   constructor(canvasId, columnMax, rowMax) {
@@ -31,10 +31,92 @@ class Board {
   }
 
   draw() {
-    this.cells.forEach((row, y) => {
-      row.forEach((cell, x) => {
+    this.cells.forEach((rows, row) => {
+      rows.forEach((cell, col) => {
         this.context.fillStyle = cell.color;
-        this.context.fillRect(x * this.widthUnit, y * this.heightUnit, this.widthUnit, this.heightUnit);
+        this.context.fillRect(col * this.widthUnit, row * this.heightUnit, this.widthUnit, this.heightUnit);
+      });
+    });
+  }
+
+  collide(tetroid) {
+    tetroid.matrix.forEach((rows, row) => {
+      rows.forEach((value, col) => {
+        if (value !== 0) {
+          if (this.isNextCellBelowGround(row, tetroid.potentialTopLeftPos)) {
+            return true;
+          }
+          if (this.isNextCellTaken(row, col, tetroid.potentialTopLeftPos)) {
+            return true;
+          }
+        }
+      });
+    });
+
+    return false;
+  }
+
+  isNextCellBelowGround(row, potentialTopLeftPos) {
+    return (row + potentialTopLeftPos.row) >= this.cells.length;
+  }
+
+  isNextCellTaken(row, col, potentialTopLeftPos) {
+    return (
+      this.cells[row + potentialTopLeftPos.row]
+      && this.cells[row + potentialTopLeftPos.row][col + potentialTopLeftPos.col]
+      && this.cells[row + potentialTopLeftPos.row][col + potentialTopLeftPos.col] !== 0
+    );
+  }
+
+  isOutOfBound(tetroid) {
+    tetroid.matrix.forEach((rows, row) => {
+      rows.forEach((value, col) => {
+        if (value !== 0) {
+          if (this.isNextCellOutOfLeft(col, tetroid.potentialTopLeftPos)) {
+            console.log("OUT LEFT");
+            return true;
+          }
+          if (this.isNextCellOutOfRight(col, tetroid.potentialTopLeftPos)) {
+            console.log("OUT RIGHT");
+            return true;
+          }
+          if (this.isNextCellOutOfUp(row, tetroid.potentialTopLeftPos)) {
+            console.log("OUT UP");
+            return true;
+          }
+          if (this.isNextCellOutOfDown(row, tetroid.potentialTopLeftPos)) {
+            console.log("OUT DOWN");
+            return true;
+          }
+        }
+      });
+    });
+
+    return false;
+  }
+
+  isNextCellOutOfLeft(col, potentialTopLeftPos) {
+    return (col + potentialTopLeftPos.col) < 0;
+  }
+
+  isNextCellOutOfRight(col, potentialTopLeftPos) {
+    return (col + potentialTopLeftPos.col) > this.cells[0].length;
+  }
+
+  isNextCellOutOfUp(row, potentialTopLeftPos) {
+    return (row + potentialTopLeftPos.row) < 0;
+  }
+
+  isNextCellOutOfDown(row, potentialTopLeftPos) {
+    return (row + potentialTopLeftPos.row) > this.cells.length;
+  }
+
+  saveTetroid(tetroid) {
+    tetroid.matrix.forEach((rows, row) => {
+      rows.forEach((value, col) => {
+        if (value !== 0) {
+          this.cells[row + tetroid.topLeftPos.row][col + tetroid.topLeftPos.col] = value;
+        }
       });
     });
   }

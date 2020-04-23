@@ -53,7 +53,7 @@ class TetroidBank {
     const tetroidCount = this.tetroidBank.length - 1;
     let randomIndex = Math.floor(Math.random() * tetroidCount);
     const tetroidFromBank = this.tetroidBank[randomIndex];
-    return new Tetroid(tetroidFromBank.matrix, tetroidFromBank.position, tetroidFromBank.color);
+    return new Tetroid(tetroidFromBank.matrix, tetroidFromBank.topLeftPos, tetroidFromBank.color);
   }
 }
 
