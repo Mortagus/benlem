@@ -160,8 +160,8 @@ class Tetris {
   }
 
   update(time = 0) {
-    // this.tryToDropTetroid(time);
-    // this.tryToLand();
+    this.tryToDropTetroid(time);
+    this.tryToLand();
     this.tryToMove();
     this.mainBoard.draw();
     this.secondaryBoard.draw();
@@ -183,17 +183,17 @@ class Tetris {
 
   tryToLand() {
     if (this.mainBoard.collide(this.currentTetroid)) {
-      console.log('WE LAND');
-      // this.mainBoard.saveTetroid(this.currentTetroid);
-      // this.initCurrentTetroid();
+      this.mainBoard.saveTetroid(this.currentTetroid);
+      console.log(this.mainBoard.cells);
+      this.initCurrentTetroid();
     }
   }
 
   tryToMove() {
-    if (this.mainBoard.isOutOfBound(this.currentTetroid) === false) {
-      this.currentTetroid.updatePosition();
+    if (this.mainBoard.isOutOfBound(this.currentTetroid)) {
+      this.currentTetroid.resetPosition();
     } else {
-      console.log('OUT');
+      this.currentTetroid.updatePosition();
     }
   }
 }

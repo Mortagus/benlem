@@ -3,8 +3,8 @@ import Position from "./include/position";
 class Tetroid {
   constructor(matrix, position, colorHex) {
     this.matrix = matrix;
-    this.topLeftPos = position;
-    this.potentialTopLeftPos = position;
+    this.topLeftPos = new Position(position.row, position.col);
+    this.potentialTopLeftPos = new Position(position.row, position.col);
     this.color = colorHex;
     this.lineWidth = 2;
     this.minimumOffset = 1;
@@ -85,7 +85,13 @@ class Tetroid {
   }
 
   updatePosition() {
-    this.topLeftPos = this.potentialTopLeftPos;
+    this.topLeftPos.row = this.potentialTopLeftPos.row;
+    this.topLeftPos.col = this.potentialTopLeftPos.col;
+  }
+
+  resetPosition() {
+    this.potentialTopLeftPos.row = this.topLeftPos.row;
+    this.potentialTopLeftPos.col = this.topLeftPos.col;
   }
 }
 
