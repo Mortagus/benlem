@@ -6,6 +6,8 @@ class ScoreKeeper {
     this.lineDisplay = $(lineId).find('#line-value');
     this.scoreCounter = 0;
     this.lineCounter = 0;
+    this.scoreByLine = 500;
+    this.scoreByTetroid = 50;
   }
 
   update() {
@@ -18,21 +20,15 @@ class ScoreKeeper {
     this.update();
   }
 
-  decrementScore(value) {
-    this.scoreCounter -= value;
-    this.update();
-  }
-
-  incrementLine(value) {
+  incrementLineCounter(value) {
     this.lineCounter += value;
-    this.update();
+    let newScore = value * this.scoreByLine;
+    this.incrementScore(newScore);
   }
 
-  decrementLine(value) {
-    this.lineCounter -= value;
-    this.update();
+  updateScoreAfterCollision() {
+    this.incrementScore(this.scoreByTetroid);
   }
-
 }
 
 export default ScoreKeeper;

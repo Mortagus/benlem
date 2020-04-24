@@ -3,25 +3,42 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-    <h1>My JavaScript Games</h1>
-    <p>Vous avez ici la liste des jeux que j'ai codé soit de moi-même soit en partant d'un contenu retrouvé sur le net.</p>
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action disabled">
-            Asteroid
-        </a>
-        <a href="#" class="list-group-item list-group-item-action disabled">
-            Mastermind
-        </a>
-        <a href="#" class="list-group-item list-group-item-action disabled">
-            Morpion / Tic Tac Toe
-        </a>
-        <a href="#" class="list-group-item list-group-item-action disabled">
-            Snake
-        </a>
-        <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#tetris_modal">
-            Tetris
-        </a>
-    </div>
+{#  <h3>My JavaScript Games</h3>#}
+{#  <p>Vous avez ici la liste des jeux que j'ai codé soit de moi-même soit en partant d'un contenu retrouvé sur le net.</p>#}
+{#  <div class="list-group">#}
+{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
+{#      Asteroid#}
+{#    </a>#}
+{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
+{#      Mastermind#}
+{#    </a>#}
+{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
+{#      Morpion / Tic Tac Toe#}
+{#    </a>#}
+{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
+{#      Snake#}
+{#    </a>#}
+{#    <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#tetris_modal">#}
+{#      Tetris#}
+{#    </a>#}
+{#  </div>#}
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#" data-toggle="modal" data-target="#tetris_modal">Tetris</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Asteroid</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Mastermind</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Morpion / Tic Tac Toe</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Snake</a>
+    </li>
+  </ul>
 
-    {% include 'Games/tetris/game_board.modal.html.twig' %}
+  {% include 'Games/tetris/game_board.modal.html.twig' %}
 {% endblock %}

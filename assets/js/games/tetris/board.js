@@ -124,6 +124,37 @@ class Board {
       });
     });
   }
+
+  tryToClearLines() {
+    let counter = 0;
+    let isFilled = true;
+    for (let row = 0; row < this.cells.length; row++) {
+      isFilled = true;
+      for (let col = 0; col < this.cells[row].length; col++) {
+        if (this.cells[row][col].value === 0) {
+          isFilled &= false;
+        }
+      }
+
+      if (isFilled) {
+        this.removeRow(row);
+        this.addFreshLineToTheTop();
+        counter++;
+      }
+    }
+
+    return counter;
+  }
+
+  removeRow(row) {
+    this.cells.splice(row, 1);
+  }
+
+  addFreshLineToTheTop() {
+    this.cells.unshift(new Array(this.columnMax).fill(
+      new Cell(0, this.backgroundColor)
+    ));
+  }
 }
 
 export default Board;

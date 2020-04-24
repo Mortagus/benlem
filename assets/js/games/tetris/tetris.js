@@ -162,6 +162,7 @@ class Tetris {
   update(time = 0) {
     this.tryToDropTetroid(time);
     this.tryToLand();
+    this.tryToClearLines();
     this.tryToMove();
     this.mainBoard.draw();
     this.secondaryBoard.draw();
@@ -184,9 +185,14 @@ class Tetris {
   tryToLand() {
     if (this.mainBoard.collide(this.currentTetroid)) {
       this.mainBoard.saveTetroid(this.currentTetroid);
-      console.log(this.mainBoard.cells);
       this.initCurrentTetroid();
+      this.updateScoreAfterCollision();
     }
+  }
+
+  tryToClearLines() {
+    const cleanedLineCounter = this.mainBoard.tryToClearLines();
+    this.scoreKeeper.incrementLineCounter(cleanedLineCounter);
   }
 
   tryToMove() {
@@ -195,6 +201,10 @@ class Tetris {
     } else {
       this.currentTetroid.updatePosition();
     }
+  }
+
+  updateScoreAfterCollision() {
+    this.scoreKeeper.updateScoreAfterCollision();
   }
 }
 
