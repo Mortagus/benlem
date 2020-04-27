@@ -13,14 +13,21 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GamesController extends AbstractController
 {
-    /**
-     * @Route("/dashboard", name="games_dashboard")
-     */
-    public function index(): Response
-    {
-        return $this->render('Games/dashboard.html.twig', [
-            'controller_name' => 'GamesController',
-            'page_identifier' => 'Games',
-        ]);
-    }
+  /**
+   * @Route("/dashboard", name="games_dashboard")
+   */
+  public function index(): Response
+  {
+    return $this->render('Games/dashboard.html.twig', [
+      'controller_name' => 'GamesController',
+      'page_identifier' => 'Games',
+      'games' => [
+        'tetris',
+        'asteroid',
+        'mastermind',
+        'snake',
+        'moprion'
+      ]
+    ]);
+  }
 }

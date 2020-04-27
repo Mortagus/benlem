@@ -9,9 +9,15 @@
 const $ = require('jquery');
 require('bootstrap');
 
+/**
+ * SCSS
+ */
 // require('../css/app.css');
 require('../css/global.scss');
 require('../css/games.scss');
 // require('../css/header.scss');
 
-require('./games/tetris/tetris.js');
+/**
+ * JAVASCRIPT
+ */
+require('./games/game_selector');

@@ -25,6 +25,10 @@ class Tetris {
     this.cheatActivated = cheatActivated;
   }
 
+  clearGame() {
+    console.error('Tetris ClearGame NOT implemented YET');
+  }
+
   initGame() {
     this.initControls();
     this.initButtonEventListener();
@@ -208,18 +212,4 @@ class Tetris {
   }
 }
 
-/**
- * Here is the starting point
- *
- * At the event triggered, the game is loaded
- */
-$(document).ready(function () {
-  let game = null;
-  $(document).on('shown.bs.modal', '#tetris_modal', function (event) {
-    game = new Tetris('#tetris_canvas', '#next_tetroid_canvas', true);
-    game.initGame();
-  });
-  $(document).on('hide.bs.modal', '#tetris_modal', function (event) {
-    game = null;
-  });
-});
+export default Tetris;

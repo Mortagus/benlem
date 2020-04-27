@@ -3,42 +3,24 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-{#  <h3>My JavaScript Games</h3>#}
-{#  <p>Vous avez ici la liste des jeux que j'ai codé soit de moi-même soit en partant d'un contenu retrouvé sur le net.</p>#}
-{#  <div class="list-group">#}
-{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
-{#      Asteroid#}
-{#    </a>#}
-{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
-{#      Mastermind#}
-{#    </a>#}
-{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
-{#      Morpion / Tic Tac Toe#}
-{#    </a>#}
-{#    <a href="#" class="list-group-item list-group-item-action disabled">#}
-{#      Snake#}
-{#    </a>#}
-{#    <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#tetris_modal">#}
-{#      Tetris#}
-{#    </a>#}
-{#  </div>#}
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="#" data-toggle="modal" data-target="#tetris_modal">Tetris</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Asteroid</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Mastermind</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Morpion / Tic Tac Toe</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Snake</a>
-    </li>
+  {#  <h3>My JavaScript Games</h3>#}
+  {#  <p>Vous avez ici la liste des jeux que j'ai codé soit de moi-même soit en partant d'un contenu retrouvé sur le net.</p>#}
+  <ul class="nav nav-tabs justify-content-center" id="game_tabs" role="tablist">
+    {% for game in games %}
+      <li class="nav-item">
+        <a class="nav-link" id="{{ game }}-tab" data-toggle="tab" href="#{{ game }}_tab_content" role="tab"
+           aria-controls="{{ game }}" aria-selected="{{ loop.first ? 'true' : 'false' }}">{{ game | capitalize }}</a>
+      </li>
+    {% endfor %}
   </ul>
 
-  {% include 'Games/tetris/game_board.modal.html.twig' %}
+  <div class="tab-content">
+    {% for game in games %}
+      <div class="tab-pane" id="{{ game }}_tab_content" role="tabpanel" aria-labelledby="{{ game }}-tab">
+        {% include 'Games/' ~ game ~ '/game_board.panel.html.twig' ignore missing %}
+      </div>
+    {% endfor %}
+  </div>
+
+  {#  {% include 'Games/tetris/game_board.modal.html.twig' %}#}
 {% endblock %}
