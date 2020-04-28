@@ -1,28 +1,22 @@
 .games {
+  #tetris_tab_content {
+    .container {
+      width: 375px;
+      height: 475px;
+      margin: 25px auto;
 
-  .list-group {
-    width: 30%;
-  }
+      border: solid #5f5f5f 3px;
+      border-radius: 25px;
 
-  #tetris_modal {
+      .tetris_header {
+        border-bottom: solid #5f5f5f 3px;
+      }
 
-    #tetris_canvas,
-    #next_tetroid_canvas {
-      border: 1px solid black;
-    }
-
-    #tetris_canvas:focus,
-    #next_tetroid_canvas:focus {
-      border: 2px solid #414141;
-    }
-
-    .modal-dialog {
-      height: 90%;
-      max-width: 530px;
-      .modal-content {
-        height: 100%;
+      canvas {
+        border: solid #5f5f5f 3px;
+        margin: 5px;
+        border-radius: 5px;
       }
     }
   }
-
 }

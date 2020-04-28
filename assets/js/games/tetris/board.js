@@ -10,7 +10,7 @@ class Board {
     this.cells = [];
     this.columnMax = columnMax;
     this.rowMax = rowMax;
-    this.backgroundColor = '#e1c89f';
+    this.backgroundColor = '#343a40';
     this.widthUnit = Math.floor(this.canvasWidth / this.columnMax);
     this.heightUnit = Math.floor(this.canvasHeight / this.rowMax);
   }

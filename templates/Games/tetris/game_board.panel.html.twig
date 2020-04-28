@@ -1,35 +1,24 @@
-
 <div class="container">
-  <div class="row">
-    <div class="column col-6">
+  <div class="row no-gutters justify-content-between tetris_header">
+    <div class="col-3 text-center" id="score">
+      <div id="score-label">Score:</div>
+      <div id="score-value">0</div>
+    </div>
+    <div class="col-6 text-center">
+      <button type="button" class="btn btn-dark" id="game_button">Start</button>
+    </div>
+    <div class="col-3 text-center" id="line">
+      <div id="line-label">Lines:</div>
+      <div id="line-value">0</div>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col">
       <canvas id="tetris_canvas" width="200" height="320"></canvas>
     </div>
-    <div class="column col-6">
-      <div class="row">
-        <div class="col-12">
-          <canvas id="next_tetroid_canvas" width="100" height="100"></canvas>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <div id="score">
-            <span id="score-label">Score: </span> <span id="score-value">0</span>
-          </div>
-        </div>
-        <div class="col-12">
-          <div id="line">
-            <span id="line-label">Lines: </span> <span id="line-value">0</span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <button type="button" class="btn btn-dark" id="game_button">Start a New Game</button>
-        </div>
-        <div class="col-12">
-          <span id="game_message"></span>
-        </div>
-      </div>
+    <div class="col">
+      <canvas id="next_tetroid_canvas" width="100" height="100"></canvas>
     </div>
+    <span id="game_message"></span>
   </div>
 </div>
