@@ -140,6 +140,9 @@ class Tetris {
       case this.gameStatus.isGamePaused():
         this.resumeGame();
         break;
+      case this.gameStatus.isGameStopped():
+        this.resetGame();
+        break;
     }
   }
 
@@ -163,7 +166,17 @@ class Tetris {
     cancelAnimationFrame(this.animationId);
   }
 
+  resetGame() {
+    this.mainBoard.init();
+    this.secondaryBoard.init();
+    this.nextTetroid = null;
+    this.initCurrentTetroid();
+    this.initNextTetroid();
+    this.gameStatus.loadGame();
+  }
+
   update(time = 0) {
+    this.checkEndGame();
     this.tryToDropTetroid(time);
     this.tryToLand();
     this.tryToClearLines();
@@ -173,6 +186,12 @@ class Tetris {
     this.currentTetroid.draw(this.mainBoard);
     this.nextTetroid.draw(this.secondaryBoard);
     this.animationId = requestAnimationFrame(this.update.bind(this));
+  }
+
+  checkEndGame() {
+    if (this.mainBoard.firstRowIsOccupied()) {
+      this.endGame();
+    }
   }
 
   tryToDropTetroid(time) {

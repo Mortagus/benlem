@@ -70,8 +70,8 @@ class GameStatus {
 
   stopGame() {
     this.status = 'stopped';
-    this.setGameButtonText('STOP');
-    this.setGameMessage('The game is OVER.');
+    this.setGameButtonText('RESET');
+    this.setGameMessage('GAME OVER.');
   }
 }
 

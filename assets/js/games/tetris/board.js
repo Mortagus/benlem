@@ -155,6 +155,16 @@ class Board {
       new Cell(0, this.backgroundColor)
     ));
   }
+
+  firstRowIsOccupied() {
+    for (let col = 0; col < this.cells[0].length; col++) {
+      if (this.cells[0][col].value !== 0) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }
 
 export default Board;
