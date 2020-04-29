@@ -6,27 +6,78 @@ Il faut repenser l'architecture du jeu.
 Le jeu doit être subdiviser en morceaux et chaque morceau doit être une classe à part.
 Pour le moment (9 avril 2020), la logique est beaucoup trop centralisée et le code n'est pas claire.
 
+NOTE UPDATE : 29-04-2020
+
 Le jeu peut être diviser de cette façon:
+
 - tetris
+    - controller principale du jeu
     - instantie tous les autres classes
-    - gère la création des pièces
-    - gère le mouvement de la pièce courante
-- main-board
-    - gère son placement dans la modale
+    - capte les différents événements du jeu et répercute les actions sur les classes ad-hoc
+    - gère la création des pièces - NON
+        La création des pièces est la responsabilité de tetroidBank
+    - gère la première position de la pièce courante dans la board principale
+    - gère la position de la prochaine pièce dans la board secondaire
+
+- board
+    - gère son placement dans la modale - NON
     - possède un tableau de valeur qui correspond aux tetroid présent
+        gère la collection des cellules qui contiendront la présence de pièces et la couleur de celles-ci
     - gère son affichage
+    - gère la détection de collisions
+    - gère la détection des bords
+
 - secondary-board
-    - gère son placement dans la modale
-    - gère son affichage
+    - même classe que main-board
+    - gère son placement dans la modale - NON -> CSS
+    - gère son affichage -> draw
     - gère l'affichage de la prochaine pièce
+
 - score
-    - gère son placement dans la modale
+    - class name = ScoreKeeper
+    - gère son placement dans la modale - NON -> CSS
     - gère son affichage
+        affichage du score courant
+        affichage du nombre de ligne éliminées
     - gère en temps réel l'affichage du score du joueur
+    - gère la logique de scoring
+        nombre de point par ligne
+        nombre de point par pièce posées
+
 - tetroid
+    - gère l'affichage d'une pièce
+    - gère la position d'une pièce
+    - contient des fonction de modification de la position
+        moveLeft
+        moveRight
+        moveDown
+        rotateLeft
+        rotateRigt
+    - gère une position potentielle
+        updatePosition -> la position réelle recoit la position potentielle
+        resetPosition -> la position potentielle est écrasée par la position réelle
+
 - tetroidBank
+    Gère la liste des tetroids disponibles
+    permet de sélectionner un tetroid aléatoirement et de le retourner
+
+- game_status
+    - gère l'état courant du jeu
+    - gère le texte sur le bouton de jeu
+    - gère le texte dans le jeu
+    - gère le changement d'état
+
+2 classes utilitaires se sont ajoutées à la liste:
+- cell
+    - contient simplement une valeur et une couleur
+- position
+    - contient simplement une valeur pour la row et une pour la column
+
+Elles ne contiennent aucune logique, elles sont là uniquement pour facilité les intéractions
 
 Lorsque l'utilisateur clique sur le jeu, une modale vide est ouverte.
+    NON -> l'utilisation de la modal a été jugée inadéquat
+    C'est remplacer par l'ouverture d'un Tab
 L'ouverture de cette modale déclenche l'instantiation de Tetris qui sera le game master
 (c'est le nom du jeu, c'est cette classe qui remplassera "game_master.js")
 Chaque morceau sera responsable de son propre affichage mais pilotable depuis la classe principale.
