@@ -42,29 +42,32 @@ class Tetris {
 
   initControls() {
     $(document).keydown(event => {
+      if (event.keyCode === 66) {
+        this.printDebug();
+      }
       if (this.gameStatus.isGameRunning()) {
         let code = event.keyCode;
         // console.log('Pressed Key: ' + code);
         switch (code) {
-          case 65:
+          case 65: // a
             this.counterClockwiseRotation();
             break;
-          case 68:
+          case 68: // d
             this.moveRight();
             break;
-          case 69:
+          case 69: // e
             this.clockwiseRotation();
             break;
-          case 78:
+          case 78: // n
             this.changeWorkingPieces();
             break;
-          case 81:
+          case 81: // q
             this.moveLeft();
             break;
-          case 83:
+          case 83: // s
             this.moveDown();
             break;
-          case 90:
+          case 90: // z
             this.moveUp();
             break;
         }
@@ -108,6 +111,12 @@ class Tetris {
     if (this.cheatActivated) {
       this.initCurrentTetroid();
     }
+  }
+
+  printDebug() {
+    console.log('[TETRIS] DEBUG');
+    console.log('Main Board Cells');
+    console.log(this.mainBoard.cells);
   }
 
   initCurrentTetroid() {
@@ -173,44 +182,56 @@ class Tetris {
     this.initCurrentTetroid();
     this.initNextTetroid();
     this.gameStatus.loadGame();
+    this.mainBoard.draw();
+    this.secondaryBoard.draw();
   }
 
   update(time = 0) {
-    this.checkEndGame();
-    this.tryToDropTetroid(time);
-    this.tryToLand();
-    this.tryToClearLines();
-    this.tryToMove();
-    this.mainBoard.draw();
-    this.secondaryBoard.draw();
-    this.currentTetroid.draw(this.mainBoard);
-    this.nextTetroid.draw(this.secondaryBoard);
-    this.animationId = requestAnimationFrame(this.update.bind(this));
-  }
-
-  checkEndGame() {
-    if (this.mainBoard.firstRowIsOccupied()) {
+    if (this.gameIsFinished()) {
       this.endGame();
+    } else {
+      this.tryToFallTetroid(time);
+      this.tryToMove();
+      this.tryToClearLines();
+      this.mainBoard.draw();
+      this.secondaryBoard.draw();
+      this.currentTetroid.draw(this.mainBoard);
+      this.nextTetroid.draw(this.secondaryBoard);
+      this.animationId = requestAnimationFrame(this.update.bind(this));
     }
   }
 
-  tryToDropTetroid(time) {
-    const deltaTime = time - this.lastTime;
-    this.lastTime = time;
+  gameIsFinished() {
+    return this.mainBoard.firstRowIsOccupied()
+  }
 
-    this.dropCounter += deltaTime;
-    if (this.dropCounter > this.dropInterval) {
-      this.moveDown();
+  tryToFallTetroid(time) {
+    if (this.isTimeToFall(time)) {
+      this.tryToDropTetroid();
       this.dropCounter = 0;
     }
   }
 
-  tryToLand() {
-    if (this.mainBoard.collide(this.currentTetroid)) {
-      this.mainBoard.saveTetroid(this.currentTetroid);
-      this.initCurrentTetroid();
-      this.updateScoreAfterCollision();
+  isTimeToFall(time) {
+    const deltaTime = time - this.lastTime;
+    this.lastTime = time;
+    this.dropCounter += deltaTime;
+    return this.dropCounter > this.dropInterval;
+  }
+
+  tryToDropTetroid() {
+    this.moveDown();
+    if (this.mainBoard.tetroidCanFall(this.currentTetroid)) {
+      this.currentTetroid.updatePosition();
+    } else {
+      this.landTetroid();
     }
+  }
+
+  landTetroid() {
+    this.mainBoard.saveTetroid(this.currentTetroid);
+    this.initCurrentTetroid();
+    this.updateScoreAfterCollision();
   }
 
   tryToClearLines() {
@@ -219,10 +240,10 @@ class Tetris {
   }
 
   tryToMove() {
-    if (this.mainBoard.isOutOfBound(this.currentTetroid)) {
-      this.currentTetroid.resetPosition();
-    } else {
+    if (this.mainBoard.tetroidCanMove(this.currentTetroid)) {
       this.currentTetroid.updatePosition();
+    } else {
+      this.currentTetroid.resetPosition();
     }
   }
 

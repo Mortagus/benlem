@@ -39,22 +39,21 @@ class Board {
     });
   }
 
-  collide(tetroid) {
+  tetroidCanFall(tetroid) {
     for (let row = 0; row < tetroid.matrix.length; row++) {
       for (let col = 0; col < tetroid.matrix[row].length; col++) {
         const value = tetroid.matrix[row][col];
         if (value !== 0) {
-          if (this.isNextCellOutOfDown(row, tetroid.potentialTopLeftPos)) {
-            return true;
-          }
-          if (this.isNextCellTaken(row, col, tetroid.potentialTopLeftPos)) {
-            return true;
+          if (this.isNextCellOutOfDown(row, tetroid.potentialTopLeftPos)
+            || this.isNextCellTaken(row, col, tetroid.potentialTopLeftPos)
+          ) {
+            return false;
           }
         }
       }
     }
 
-    return false;
+    return true;
   }
 
   isNextCellTaken(row, col, potentialTopLeftPos) {
@@ -71,28 +70,24 @@ class Board {
     }
   }
 
-  isOutOfBound(tetroid) {
+  tetroidCanMove(tetroid) {
     for (let row = 0; row < tetroid.matrix.length; row++) {
       for (let col = 0; col < tetroid.matrix[row].length; col++) {
         const value = tetroid.matrix[row][col];
         if (value !== 0) {
-          if (this.isNextCellOutOfRight(col, tetroid.potentialTopLeftPos)) {
-            return true;
-          }
-          if (this.isNextCellOutOfLeft(col, tetroid.potentialTopLeftPos)) {
-            return true;
-          }
-          if (this.isNextCellOutOfUp(row, tetroid.potentialTopLeftPos)) {
-            return true;
-          }
-          if (this.isNextCellOutOfDown(row, tetroid.potentialTopLeftPos)) {
-            return true;
+          if (this.isNextCellOutOfRight(col, tetroid.potentialTopLeftPos)
+            || this.isNextCellOutOfLeft(col, tetroid.potentialTopLeftPos)
+            || this.isNextCellOutOfUp(row, tetroid.potentialTopLeftPos)
+            || this.isNextCellOutOfDown(row, tetroid.potentialTopLeftPos)
+            || this.isNextCellTaken(row, col, tetroid.potentialTopLeftPos)
+          ) {
+            return false;
           }
         }
       }
     }
 
-    return false;
+    return true;
   }
 
   isNextCellOutOfRight(col, potentialTopLeftPos) {
