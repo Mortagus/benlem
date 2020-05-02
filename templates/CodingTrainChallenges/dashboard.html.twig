@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+  <ul class="nav nav-tabs justify-content-center" id="challenge_tabs" role="tablist">
+    {% for challenge in challenges %}
+      <li class="nav-item">
+        <a class="nav-link" id="{{ challenge }}-tab" data-toggle="tab" href="#{{ challenge }}_tab_content" role="tab"
+           aria-controls="{{ challenge }}" aria-selected="{{ loop.first ? 'true' : 'false' }}">{{ challenge | capitalize }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="tab-content">
+    {% for challenge in challenges %}
+      <div class="tab-pane" id="{{ challenge }}_tab_content" role="tabpanel" aria-labelledby="{{ challenge }}-tab">
+        {% include 'CodingTrainChallenges/' ~ challenge ~ '/challenge_board.panel.html.twig' ignore missing %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

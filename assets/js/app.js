@@ -8,6 +8,7 @@
 // any CSS you require will output into a single css file (app.css in this case)
 const $ = require('jquery');
 require('bootstrap');
+require('p5');
 
 /**
  * SCSS
@@ -21,3 +22,4 @@ require('../css/games.scss');
  * JAVASCRIPT
  */
 require('./games/game_selector');
+require('./coding_challenges/challenge_selector');
