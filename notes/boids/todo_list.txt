@@ -1,0 +1,11 @@
+Flocking Simulation
+===================
+
+Trucs à modifier pour améliorer la simulation
+- ajouter slider pour multiplier les différents paramètres (alignment, cohesion, separation)
+    - amélioration de la UI
+- refactorer le code pour avoir moins de redondance
+- appliquer les calcules de forces en snapshot et non boid après boid
+- optimiser l'application des forces en subdivisant l'espace en quadrant
+- modifier la représentation graphique des boids
+

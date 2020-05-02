@@ -1,5 +1,4 @@
 import $ from "jquery";
-import Boids from "./boids/boids";
 
 /**
  * Here is the starting point
@@ -17,7 +16,7 @@ $(document).ready(function () {
     switch ($currentTab.attr('id')) {
       case boidsTabId:
         lastChallenge = currentChallenge;
-        currentChallenge = new Boids('boids-container');
+        currentChallenge = require('./boids/boids_sketch');
         break;
       default:
         console.error('Selected Tab (' + $currentTab.attr('id') + ') does not work with any game yet.')
@@ -27,7 +26,8 @@ $(document).ready(function () {
       const $lastTab = $(event.relatedTarget);
       switch ($lastTab.attr('id')) {
         case boidsTabId:
-          console.log('[Challenge Selector] lets CLEAR Boids Algorithm Challenge');
+          currentChallenge.default.remove();
+          currentChallenge.default = null;
           break;
       }
     }
