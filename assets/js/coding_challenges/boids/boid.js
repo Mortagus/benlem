@@ -1,35 +1,79 @@
 import p5 from 'p5';
 
 class Boid {
-  constructor(processing) {
-    this.processing = processing;
-    this.position = this.processing.createVector(
-      this.processing.random(this.processing.width),
-      this.processing.random(this.processing.height)
-    );
+  constructor(processing, position) {
+    this.p5 = processing;
+    this.position = position;
     this.velocity = p5.Vector.random2D();
-    this.velocity.setMag(this.processing.random(0.5, 1.5));
-    this.acceleration = this.processing.createVector();
+    this.velocity.setMag(this.p5.random(0.5, 1.5));
+    this.acceleration = this.p5.createVector();
     this.perceptionRadius = 50;
     this.maxForce = 0.2;
     this.maxSpeed = 4;
   }
 
-  flock(boids) {
-    let alignment = this.align(boids);
-    let cohesion = this.cohesion(boids);
-    let separation = this.separation(boids);
-    this.acceleration.add(alignment);
-    this.acceleration.add(cohesion);
-    this.acceleration.add(separation);
+  calculateAcceleration(boids) {
+    let totalAcceleration = this.p5.createVector();
+    let alignmentSteering = this.p5.createVector();
+    let separationSteering = this.p5.createVector();
+    let cohesionSteering = this.p5.createVector();
+    let totalBoidWithinRadius = 0;
+
+    for (let other of boids) {
+      if (other === this) {
+        continue;
+      }
+      let distance = this.calculateDistance(this.position, other.position);
+      if (distance < this.perceptionRadius) {
+        alignmentSteering.add(other.velocity);
+
+        let diff = p5.Vector.sub(this.position, other.position);
+        diff.div(distance);
+        separationSteering.add(diff);
+
+        cohesionSteering.add(other.position);
+
+        totalBoidWithinRadius++;
+      }
+    }
+
+    if (totalBoidWithinRadius > 0) {
+      alignmentSteering.div(totalBoidWithinRadius);
+      alignmentSteering.sub(this.velocity);
+      alignmentSteering.limit(this.maxForce);
+
+      separationSteering.div(totalBoidWithinRadius);
+      separationSteering.sub(this.velocity);
+      separationSteering.limit(this.maxForce);
+
+      cohesionSteering.div(totalBoidWithinRadius);
+      cohesionSteering.sub(this.position);
+      cohesionSteering.sub(this.velocity);
+      cohesionSteering.limit(this.maxForce);
+    }
+
+    totalAcceleration.add(alignmentSteering);
+    totalAcceleration.add(separationSteering);
+    totalAcceleration.add(cohesionSteering);
+
+    return totalAcceleration;
+  }
+
+  calculateDistance(currentBoidPosition, otherBoidPosition) {
+    return this.p5.dist(
+      currentBoidPosition.x,
+      currentBoidPosition.y,
+      otherBoidPosition.x,
+      otherBoidPosition.y
+    );
   }
 
   align(boids) {
-    let steering = this.processing.createVector();
+    let steering = this.p5.createVector();
     let total = 0;
 
     for (let other of boids) {
-      let distance = this.processing.dist(
+      let distance = this.p5.dist(
         this.position.x,
         this.position.y,
         other.position.x,
@@ -51,11 +95,11 @@ class Boid {
   }
 
   separation(boids) {
-    let steering = this.processing.createVector();
+    let steering = this.p5.createVector();
     let total = 0;
 
     for (let other of boids) {
-      let distance = this.processing.dist(
+      let distance = this.p5.dist(
         this.position.x,
         this.position.y,
         other.position.x,
@@ -79,11 +123,11 @@ class Boid {
   }
 
   cohesion(boids) {
-    let steering = this.processing.createVector();
+    let steering = this.p5.createVector();
     let total = 0;
 
     for (let other of boids) {
-      let distance = this.processing.dist(
+      let distance = this.p5.dist(
         this.position.x,
         this.position.y,
         other.position.x,
@@ -105,30 +149,17 @@ class Boid {
     return steering;
   }
 
-  edges() {
-    if (this.position.x > this.processing.width) {
-      this.position.x = 0;
-    } else if (this.position.x < 0) {
-      this.position.x = this.processing.width;
-    }
-    if (this.position.y > this.processing.height) {
-      this.position.y = 0;
-    } else if (this.position.y < 0) {
-      this.position.y = this.processing.height;
-    }
-  }
-
-  update() {
+  update(allBoids) {
     this.position.add(this.velocity);
+    this.acceleration = this.calculateAcceleration(allBoids);
+    this.acceleration.limit(10);
     this.velocity.add(this.acceleration);
-    this.velocity.limit(this.maxSpeed);
-    this.acceleration.mult(0);
   }
 
   show () {
-    this.processing.strokeWeight(8);
-    this.processing.stroke(255);
-    this.processing.point(this.position.x, this.position.y);
+    this.p5.strokeWeight(8);
+    this.p5.stroke(255);
+    this.p5.point(this.position.x, this.position.y);
   }
 }
 

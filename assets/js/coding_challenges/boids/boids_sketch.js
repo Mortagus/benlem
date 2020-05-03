@@ -1,24 +1,21 @@
 import p5 from 'p5';
-import Boid from './boid';
+import Flock from './flock';
+import Playfield from './playfield';
 
 function boidsSketch(p5) {
-  let flock = [];
+  let flock = null;
+  let playfield = null;
 
   p5.setup = function () {
-    p5.createCanvas(720, 400);
-    for (let index = 0; index < 1000; index++) {
-      flock.push(new Boid(p5));
-    }
+    playfield = new Playfield(p5, 720, 400);
+    flock = new Flock(p5, 50);
   };
 
   p5.draw = function () {
-    p5.background(51);
-    for (let boid of flock) {
-      boid.edges();
-      boid.flock(flock);
-      boid.update();
-      boid.show();
-    }
+    playfield.draw();
+    playfield.edges(flock);
+    flock.update();
+    flock.draw();
   };
 }
 
