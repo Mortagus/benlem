@@ -22,6 +22,25 @@ class Playfield {
     }
   }
 
+  keepWithinBounds(flock) {
+    for (let boid of flock.boids) {
+      const margin = 50;
+
+      if (boid.position.x < margin) {
+        boid.velocity.mult(1);
+      }
+      if (boid.position.x > this.width - margin) {
+        boid.velocity.mult(-1);
+      }
+      if (boid.position.y < margin) {
+        boid.velocity.mult(1);
+      }
+      if (boid.position.y > this.height - margin) {
+        boid.velocity.mult(-1);
+      }
+    }
+  }
+
   draw() {
     this.p5.background(this.backgroundColor);
   }

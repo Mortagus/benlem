@@ -31,8 +31,9 @@ class Flock {
   }
 
   draw() {
+    /** Boid boid*/
     for (let boid of this.boids) {
-      boid.show();
+      boid.draw();
     }
   }
 }

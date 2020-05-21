@@ -1,4 +1,5 @@
 import p5 from 'p5';
+import * as engine from './engine';
 
 class Boid {
   constructor(processing, position) {
@@ -7,9 +8,6 @@ class Boid {
     this.velocity = p5.Vector.random2D();
     this.velocity.setMag(this.p5.random(0.5, 1.5));
     this.acceleration = this.p5.createVector();
-    this.perceptionRadius = 50;
-    this.maxForce = 0.2;
-    this.maxSpeed = 4;
   }
 
   calculateAcceleration(boids) {
@@ -24,7 +22,7 @@ class Boid {
         continue;
       }
       let distance = this.calculateDistance(this.position, other.position);
-      if (distance < this.perceptionRadius) {
+      if (distance < engine.PERCEPTION_RADIUS) {
         alignmentSteering.add(other.velocity);
 
         let diff = p5.Vector.sub(this.position, other.position);
@@ -39,17 +37,20 @@ class Boid {
 
     if (totalBoidWithinRadius > 0) {
       alignmentSteering.div(totalBoidWithinRadius);
+      alignmentSteering.setMag(engine.MAX_SPEED);
       alignmentSteering.sub(this.velocity);
-      alignmentSteering.limit(this.maxForce);
+      alignmentSteering.limit(engine.MAX_FORCE);
 
       separationSteering.div(totalBoidWithinRadius);
+      separationSteering.setMag(engine.MAX_SPEED);
       separationSteering.sub(this.velocity);
-      separationSteering.limit(this.maxForce);
+      separationSteering.limit(engine.MAX_FORCE);
 
       cohesionSteering.div(totalBoidWithinRadius);
       cohesionSteering.sub(this.position);
+      cohesionSteering.setMag(engine.MAX_SPEED);
       cohesionSteering.sub(this.velocity);
-      cohesionSteering.limit(this.maxForce);
+      cohesionSteering.limit(engine.MAX_FORCE);
     }
 
     totalAcceleration.add(alignmentSteering);
@@ -68,98 +69,29 @@ class Boid {
     );
   }
 
-  align(boids) {
-    let steering = this.p5.createVector();
-    let total = 0;
-
-    for (let other of boids) {
-      let distance = this.p5.dist(
-        this.position.x,
-        this.position.y,
-        other.position.x,
-        other.position.y
-      );
-      if (other !== this && distance < this.perceptionRadius) {
-        steering.add(other.velocity);
-        total++;
-      }
-    }
-    if (total) {
-      steering.div(total);
-      steering.setMag(this.maxSpeed);
-      steering.sub(this.velocity);
-      steering.limit(this.maxForce);
-    }
-
-    return steering;
-  }
-
-  separation(boids) {
-    let steering = this.p5.createVector();
-    let total = 0;
-
-    for (let other of boids) {
-      let distance = this.p5.dist(
-        this.position.x,
-        this.position.y,
-        other.position.x,
-        other.position.y
-      );
-      if (other !== this && distance < this.perceptionRadius) {
-        let diff = p5.Vector.sub(this.position, other.position);
-        diff.div(distance);
-        steering.add(diff);
-        total++;
-      }
-    }
-    if (total) {
-      steering.div(total);
-      steering.setMag(this.maxSpeed);
-      steering.sub(this.velocity);
-      steering.limit(this.maxForce);
-    }
-
-    return steering;
-  }
-
-  cohesion(boids) {
-    let steering = this.p5.createVector();
-    let total = 0;
-
-    for (let other of boids) {
-      let distance = this.p5.dist(
-        this.position.x,
-        this.position.y,
-        other.position.x,
-        other.position.y
-      );
-      if (other !== this && distance < this.perceptionRadius) {
-        steering.add(other.position);
-        total++;
-      }
-    }
-    if (total) {
-      steering.div(total);
-      steering.sub(this.position);
-      steering.setMag(this.maxSpeed);
-      steering.sub(this.velocity);
-      steering.limit(this.maxForce);
-    }
-
-    return steering;
-  }
-
   update(allBoids) {
     this.position.add(this.velocity);
     this.acceleration = this.calculateAcceleration(allBoids);
-    this.acceleration.limit(10);
     this.velocity.add(this.acceleration);
   }
 
-  show () {
-    this.p5.strokeWeight(8);
-    this.p5.stroke(255);
-    this.p5.point(this.position.x, this.position.y);
+  draw() {
+    this.p5.push();
+    this.p5.strokeWeight(1);
+    this.p5.stroke("#1658d2");
+    const angle = Math.atan2(this.velocity.y, this.velocity.x);
+    this.p5.translate(this.position.x, this.position.y);
+    this.p5.rotate(angle);
+    this.p5.translate(-this.position.x, -this.position.y);
+    this.p5.triangle(
+      this.position.x,
+      this.position.y,
+      this.position.x - 15,
+      this.position.y + 5,
+      this.position.x - 15,
+      this.position.y - 5
+    );
+    this.p5.pop();
   }
 }
 
