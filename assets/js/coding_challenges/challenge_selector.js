@@ -9,6 +9,7 @@ $(document).ready(function () {
   let currentChallenge = null;
   let lastChallenge = null;
   const boidsTabId = 'boids-tab';
+  const singlePendulumTabId = 'single_pendulum-tab';
   const doublePendulumTabId = 'double_pendulum-tab';
   const tabListSelector = '#challenge_tabs';
 
@@ -19,22 +20,16 @@ $(document).ready(function () {
         lastChallenge = currentChallenge;
         currentChallenge = require('./boids/boids_sketch');
         break;
-      case doublePendulumTabId:
+      case singlePendulumTabId:
         lastChallenge = currentChallenge;
-        currentChallenge = require('./pendulum/pendulum_sketch');
+        currentChallenge = require('./single_pendulum/pendulum_sketch');
         break;
       default:
         console.error('Selected Tab (' + $currentTab.attr('id') + ') does not work with any game yet.')
     }
 
-    // if(event.relatedTarget) {
-    //   const $lastTab = $(event.relatedTarget);
-    //   switch ($lastTab.attr('id')) {
-    //     case boidsTabId:
-    //       currentChallenge.default.remove();
-    //       currentChallenge.default = null;
-    //       break;
-    //   }
-    // }
+    if (event.relatedTarget && lastChallenge) {
+      lastChallenge.default.remove();
+    }
   });
 });

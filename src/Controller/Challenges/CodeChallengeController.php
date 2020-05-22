@@ -23,6 +23,7 @@ class CodeChallengeController extends AbstractController
       'page_identifier' => 'Code_Challenges',
       'challenges' => [
         'boids',
+        'single_pendulum',
         'double_pendulum',
         'raycasting',
         'hilbert_curve',
