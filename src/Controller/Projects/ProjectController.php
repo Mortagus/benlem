@@ -13,14 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProjectController extends AbstractController
 {
-    /**
-     * @Route("/dashboard", name="project_dashboard")
-     */
-    public function index(): Response
-    {
-        return $this->render('Projects/dashboard.html.twig', [
-            'controller_name' => 'ProjectController',
-            'page_identifier' => 'projetcs',
-        ]);
-    }
+  /**
+   * @Route("/dashboard", name="project_dashboard")
+   */
+  public function index(): Response
+  {
+    return $this->render('Projects/dashboard.html.twig', [
+      'controller_name' => 'ProjectController',
+      'page_identifier' => 'projetcs',
+    ]);
+  }
 }
