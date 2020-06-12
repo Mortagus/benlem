@@ -11,7 +11,7 @@ function pendulumSketch(p5) {
     playfield = new Playfield(p5, engine.CANVAS_WIDTH, engine.CANVAS_HEIGHT);
     pendulum = new Pendulum(p5, p5.createVector(engine.CANVAS_WIDTH / 2, 0));
     pendulum.setArmLength(350);
-    pendulum.setMass(10000);
+    pendulum.setMass(10);
   };
 
   p5.draw = function () {

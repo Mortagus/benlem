@@ -1,11 +1,11 @@
 <div class="container-fluid">
   <div class="row no-gutter">
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <h1>{{ challenge.title_h1 }}</h1>
       {% if challenge.title_h2 is defined %}<h2>{{ challenge.title_h2 }}</h2>{% endif %}
       {% if challenge.title_h3 is defined %}<h3>{{ challenge.title_h3 }}</h3>{% endif %}
     </div>
-    <div class="col-lg-9">
+    <div class="col-lg-8">
       <div id="{{ challenge.container_id }}"></div>
     </div>
   </div>
