@@ -4,18 +4,18 @@
 
 {% block body %}
   <ul class="nav nav-tabs justify-content-center" id="challenge_tabs" role="tablist">
-    {% for challenge in challenges %}
+    {% for id, challenge in challenges %}
       <li class="nav-item">
-        <a class="nav-link" id="{{ challenge }}-tab" data-toggle="tab" href="#{{ challenge }}_tab_content" role="tab"
-           aria-controls="{{ challenge }}" aria-selected="{{ loop.first ? 'true' : 'false' }}">{{ challenge | capitalize }}</a>
+        <a class="nav-link" id="{{ id }}-tab" data-toggle="tab" href="#{{ id }}_tab_content" role="tab"
+           aria-controls="{{ id }}" aria-selected="{{ loop.first ? 'true' : 'false' }}">{{ challenge.name | capitalize }}</a>
       </li>
     {% endfor %}
   </ul>
 
   <div class="tab-content">
-    {% for challenge in challenges %}
-      <div class="tab-pane" id="{{ challenge }}_tab_content" role="tabpanel" aria-labelledby="{{ challenge }}-tab">
-        {% include 'CodingTrainChallenges/' ~ challenge ~ '/challenge_board.panel.html.twig' ignore missing %}
+    {% for id, challenge in challenges %}
+      <div class="tab-pane" id="{{ id }}_tab_content" role="tabpanel" aria-labelledby="{{ id }}-tab">
+        {% include 'CodingTrainChallenges/generic_challenge_board.panel.html.twig' with challenge %}
       </div>
     {% endfor %}
   </div>
