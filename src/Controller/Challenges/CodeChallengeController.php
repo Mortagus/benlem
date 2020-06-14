@@ -42,9 +42,13 @@ class CodeChallengeController extends AbstractController
           'title_h1' => $h1,
           'title_h2' => 'MOVER SIMULATION',
         ],
+        'hilbert_curve' => [
+          'name' => 'Hilbert Curve',
+          'container_id' => 'hilbert-container',
+          'title_h1' => $h1,
+        ],
 //        'double_pendulum',
 //        'raycasting',
-//        'hilbert_curve',
       ]
     ]);
   }
