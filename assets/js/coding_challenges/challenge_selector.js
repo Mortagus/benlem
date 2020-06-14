@@ -11,6 +11,7 @@ $(document).ready(function () {
   const boidsTabId = 'boids-tab';
   const singlePendulumTabId = 'single_pendulum-tab';
   const moverTabId = 'mover_simulation-tab';
+  const hilberCurveTabId = 'hilbert_curve-tab';
   const tabListSelector = '#challenge_tabs';
 
   $(document).on('shown.bs.tab', tabListSelector + ' a[data-toggle="tab"]', function (event) {
@@ -27,6 +28,10 @@ $(document).ready(function () {
       case moverTabId:
         lastChallenge = currentChallenge;
         currentChallenge = require('./mover_simulation/sketch');
+        break;
+      case hilberCurveTabId:
+        lastChallenge = currentChallenge;
+        currentChallenge = require('./hilbert_curve/sketch');
         break;
       default:
         console.error('Selected Tab (' + $currentTab.attr('id') + ') does not work with any game yet.')

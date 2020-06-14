@@ -7,7 +7,7 @@ class Playfield {
     this.backgroundColor = 51;
   }
 
-  draw() {
+  show() {
     this.p5.background(this.backgroundColor);
   }
 }
