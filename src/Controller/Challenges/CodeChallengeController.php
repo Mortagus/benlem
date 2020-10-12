@@ -47,6 +47,11 @@ class CodeChallengeController extends AbstractController
           'container_id' => 'hilbert-container',
           'title_h1' => $h1,
         ],
+        'fractal_set' => [
+          'name' => 'Fractal Set',
+          'container_id' => 'fractal-set-container',
+          'title_h1' => $h1,
+        ],
 //        'double_pendulum',
 //        'raycasting',
       ]

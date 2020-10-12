@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import Playfield from './playfield';
+import Playfield from '../includes/playfield';
 import Pendulum from './pendulum';
 import * as engine from './engine';
 

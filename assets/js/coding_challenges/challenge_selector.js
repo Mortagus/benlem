@@ -8,11 +8,12 @@ import $ from "jquery";
 $(document).ready(function () {
   let currentChallenge = null;
   let lastChallenge = null;
+  const tabListSelector = '#challenge_tabs';
   const boidsTabId = 'boids-tab';
   const singlePendulumTabId = 'single_pendulum-tab';
   const moverTabId = 'mover_simulation-tab';
   const hilberCurveTabId = 'hilbert_curve-tab';
-  const tabListSelector = '#challenge_tabs';
+  const fractalSetTabId = 'fractal_set-tab';
 
   $(document).on('shown.bs.tab', tabListSelector + ' a[data-toggle="tab"]', function (event) {
     const $currentTab = $(event.target);
@@ -32,6 +33,10 @@ $(document).ready(function () {
       case hilberCurveTabId:
         lastChallenge = currentChallenge;
         currentChallenge = require('./hilbert_curve/sketch');
+        break;
+      case fractalSetTabId:
+        lastChallenge = currentChallenge;
+        currentChallenge = require('./fractal_set/sketch');
         break;
       default:
         console.error('Selected Tab (' + $currentTab.attr('id') + ') does not work with any game yet.')
