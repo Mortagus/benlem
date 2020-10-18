@@ -10,7 +10,7 @@ use Exception;
  * Date: 28/11/2017
  * Time: 13:00
  */
-class Generator
+class ABInbevPromoCodeGenerator
 {
 
   /**
@@ -22,15 +22,15 @@ class Generator
    * Generator constructor.
    * @param array $config
    */
-  public function __construct(array $config = null) {
+  public function __construct(array $config = []) {
     $this->initConfig($config);
   }
 
   /**
    * @param array $config
    */
-  private function initConfig($config): void {
-    if (is_array($config)) {
+  private function initConfig(array $config): void {
+    if ($config) {
       $this->config = $config;
     } else {
       $this->config = [
